@@ -60,9 +60,9 @@ jobs:
         id: define-tags
         run: |
           if [ "${{ github.event_name }}" == "push" ]; then
-            echo "tags=techgarageir/mtwireguard:${{ github.ref_name }}, techgarageir/mtwireguard:latest, ghcr.io/${{ github.repository_owner }}/mtwireguard:${{ github.ref_name }}, ghcr.io/${{ github.repository_owner }}/mtwireguard:latest" >> $GITHUB_ENV
+            echo "tags=bizkut/mtwireguard:${{ github.ref_name }}, bizkut/mtwireguard:latest, ghcr.io/${{ github.repository_owner }}/mtwireguard:${{ github.ref_name }}, ghcr.io/${{ github.repository_owner }}/mtwireguard:latest" >> $GITHUB_ENV
           else
-            echo "tags=techgarageir/mtwireguard:${{ github.event.inputs.tag }}, ghcr.io/${{ github.repository_owner }}/mtwireguard:${{ github.event.inputs.tag }}" >> $GITHUB_ENV
+            echo "tags=bizkut/mtwireguard:${{ github.event.inputs.tag }}, ghcr.io/${{ github.repository_owner }}/mtwireguard:${{ github.event.inputs.tag }}" >> $GITHUB_ENV
           fi
 
       - name: Build and push Docker images
