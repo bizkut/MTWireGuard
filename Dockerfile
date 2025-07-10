@@ -29,6 +29,7 @@ RUN echo "Verifying presence of libe_sqlite3.so in /app:" && \
     fi
 
 # Attempt to make libe_sqlite3.so available as SQLite.Interop.dll
+USER root
 RUN if [ -f /app/libe_sqlite3.so ]; then \
       cp /app/libe_sqlite3.so /app/SQLite.Interop.dll && \
       echo "Copied /app/libe_sqlite3.so to /app/SQLite.Interop.dll" && \
@@ -37,5 +38,6 @@ RUN if [ -f /app/libe_sqlite3.so ]; then \
     else \
       echo "Error: Cannot copy /app/libe_sqlite3.so because it was not found."; \
     fi
+USER app
 
 ENTRYPOINT ["./MTWireGuard"]
