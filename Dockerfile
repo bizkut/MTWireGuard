@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0-noble AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-jammy-arm64v8 AS final
 
 ENV TZ=Asia/Tehran
 
