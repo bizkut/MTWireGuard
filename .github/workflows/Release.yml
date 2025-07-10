@@ -46,20 +46,15 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Set Runtime Identifier
-        id: set_rid
+      - name: Restore and Publish for linux-x64
         run: |
-          if [[ "$RUNNER_ARCH" == "X64" ]]; then
-            echo "RID=linux-x64" >> $GITHUB_ENV
-          else
-            echo "RID=linux-arm64" >> $GITHUB_ENV
-          fi
+          dotnet restore ./UI/MTWireGuard.csproj --runtime linux-x64
+          dotnet publish ./UI/MTWireGuard.csproj -c Release -o publish/linux-x64 --runtime linux-x64 --no-restore --self-contained true /p:WarningLevel=0 /p:PublishTrimmed=true
 
-      - name: Restore Dependencies
-        run: dotnet restore --runtime ${{ env.RID }}
-
-      - name: Build and Publish
-        run: dotnet publish ./UI/MTWireGuard.csproj -c Release -o publish --runtime ${{ env.RID }} --no-restore --self-contained true /p:WarningLevel=0 /p:PublishTrimmed=true
+      - name: Restore and Publish for linux-arm64
+        run: |
+          dotnet restore ./UI/MTWireGuard.csproj --runtime linux-arm64
+          dotnet publish ./UI/MTWireGuard.csproj -c Release -o publish/linux-arm64 --runtime linux-arm64 --no-restore --self-contained true /p:WarningLevel=0 /p:PublishTrimmed=true
 
       - name: Define Tags
         id: define-tags
@@ -76,7 +71,7 @@ jobs:
           IMAGE_NAME: "techgarageir/mtwireguard"
           GHCR_IMAGE_NAME: "ghcr.io/${{ github.repository_owner }}/mtwireguard"
         with:
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           context: .
           file: ./Dockerfile
           push: true
