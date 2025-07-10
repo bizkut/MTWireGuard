@@ -31,4 +31,14 @@ RUN if [ -f /app/MTWireGuard ]; then \
 RUN echo "Current directory: $(pwd)"
 RUN echo "PATH variable: $PATH"
 
+RUN echo "Checking for ELF interpreter /lib/ld-linux-aarch64.so.1:"
+RUN if [ -f /lib/ld-linux-aarch64.so.1 ]; then \
+      echo "Interpreter /lib/ld-linux-aarch64.so.1 FOUND"; \
+      ls -l /lib/ld-linux-aarch64.so.1; \
+      echo "File type of interpreter:"; file /lib/ld-linux-aarch64.so.1; \
+      echo "ldd on interpreter itself (output might be verbose or indicate it's not directly executable with ldd):"; ldd /lib/ld-linux-aarch64.so.1 || echo "ldd failed or not applicable for interpreter."; \
+    else \
+      echo "Interpreter /lib/ld-linux-aarch64.so.1 NOT FOUND"; \
+    fi
+
 ENTRYPOINT ["./MTWireGuard"]
