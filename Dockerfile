@@ -4,7 +4,19 @@ ENV TZ=Asia/Tehran
 
 # Install SQLite native library, file utility, and libc6
 USER root
-RUN apt-get update && apt-get install -y --no-install-recommends libsqlite3-0 file libc6 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends --reinstall libc6 file libsqlite3-0 && \
+    rm -rf /var/lib/apt/lists/*
+
+# Immediate check after apt-get
+RUN echo "Post apt-get: Checking for ELF interpreter /lib/ld-linux-aarch64.so.1:" && \
+    if [ -f /lib/ld-linux-aarch64.so.1 ]; then \
+      echo "POST APT-GET: Interpreter /lib/ld-linux-aarch64.so.1 FOUND"; \
+      ls -l /lib/ld-linux-aarch64.so.1; \
+      file /lib/ld-linux-aarch64.so.1; \
+    else \
+      echo "POST APT-GET: Interpreter /lib/ld-linux-aarch64.so.1 NOT FOUND"; \
+    fi
 
 WORKDIR /app
 EXPOSE 8080
