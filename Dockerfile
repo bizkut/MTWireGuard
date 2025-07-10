@@ -17,4 +17,18 @@ ARG TARGETARCH
 # Use TARGETARCH to copy the correct binaries
 COPY publish/linux-${TARGETARCH}/ .
 
+RUN echo "Diagnostics before entrypoint:"
+RUN echo "Listing /app/ contents:" && ls -lA /app/
+RUN echo "Checking /app/MTWireGuard details:"
+RUN if [ -f /app/MTWireGuard ]; then \
+      echo "MTWireGuard FOUND in /app/"; \
+      echo "Permissions:"; ls -l /app/MTWireGuard; \
+      echo "Attempting file command:"; file /app/MTWireGuard || echo "'file' command not found or failed."; \
+      echo "Attempting ldd command:"; ldd /app/MTWireGuard || echo "'ldd' command not found or failed on MTWireGuard."; \
+    else \
+      echo "MTWireGuard NOT FOUND in /app/"; \
+    fi
+RUN echo "Current directory: $(pwd)"
+RUN echo "PATH variable: $PATH"
+
 ENTRYPOINT ["./MTWireGuard"]
