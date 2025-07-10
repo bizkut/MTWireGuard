@@ -65,7 +65,12 @@ namespace MTWireGuard.Application.Utils
                 .Enrich.WithClientId(GetIDContent())
                 .WriteTo.Logger(lc => lc
                     .Filter.ByExcluding(AspNetCoreRequestLogging())
-                    .WriteTo.SQLite(GetLogPath("logs.db")))
+                    // TODO: Replace with Serilog.Sinks.SQLite.Microsoft configuration
+                    // .WriteTo.SQLite(GetLogPath("logs.db")))
+                    // Example for Serilog.Sinks.SQLite.Microsoft might be:
+                    // .WriteTo.MicrosoftSqlite(sqliteDbPath: GetLogPath("logs.db"), tableName: "Logs")
+                    // Please check the actual API for Serilog.Sinks.SQLite.Microsoft v1.0.0
+                    )
                 .WriteTo.Logger(lc => lc
                     .Filter.ByIncludingOnly(AspNetCoreRequestLogging())
                     .WriteTo.File(
