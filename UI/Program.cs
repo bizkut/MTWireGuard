@@ -12,7 +12,6 @@ internal class Program
 
     private static async Task Main(string[] args)
     {
-        SQLitePCL.Batteries.Init();
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddControllersWithViews();
         builder.Services.AddExceptionHandler<ExceptionHandler>();
