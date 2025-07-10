@@ -12,8 +12,8 @@ internal class Program
 
     private static async Task Main(string[] args)
     {
-        SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3());
-        SQLitePCL.raw.FreezeProvider(); // Make this choice permanent
+        // SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3()); // Not needed if sqlite_interop_arm64 provides the native lib for System.Data.SQLite
+        // SQLitePCL.raw.FreezeProvider(); // Make this choice permanent
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddControllersWithViews();
         builder.Services.AddExceptionHandler<ExceptionHandler>();

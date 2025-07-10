@@ -19,25 +19,15 @@ ARG TARGETARCH
 # Use TARGETARCH to copy the correct binaries
 COPY publish/linux-${TARGETARCH}/ .
 
-# Diagnostic: Verify presence of libe_sqlite3.so from SQLitePCLRaw.bundle_e_sqlite3
-RUN echo "Verifying presence of libe_sqlite3.so in /app:" && \
-    if [ -f /app/libe_sqlite3.so ]; then \
-      echo "libe_sqlite3.so FOUND in /app/"; \
-      ls -l /app/libe_sqlite3.so; \
-    else \
-      echo "libe_sqlite3.so NOT FOUND in /app/"; \
-    fi
-
-# Attempt to make libe_sqlite3.so available as SQLite.Interop.dll
-USER root
-RUN if [ -f /app/libe_sqlite3.so ]; then \
-      cp /app/libe_sqlite3.so /app/SQLite.Interop.dll && \
-      echo "Copied /app/libe_sqlite3.so to /app/SQLite.Interop.dll" && \
-      echo "Verifying SQLite.Interop.dll:" && \
+# Diagnostic: Verify presence of SQLite.Interop.dll (expected from sqlite_interop_arm64)
+RUN echo "Verifying presence of SQLite.Interop.dll in /app (from sqlite_interop_arm64):" && \
+    if [ -f /app/SQLite.Interop.dll ]; then \
+      echo "SQLite.Interop.dll FOUND in /app/"; \
       ls -l /app/SQLite.Interop.dll; \
+      file /app/SQLite.Interop.dll || echo "'file' command not found or failed on SQLite.Interop.dll"; \
+      ldd /app/SQLite.Interop.dll || echo "'ldd' command not found or failed on SQLite.Interop.dll"; \
     else \
-      echo "Error: Cannot copy /app/libe_sqlite3.so because it was not found."; \
+      echo "SQLite.Interop.dll NOT FOUND in /app/"; \
     fi
-USER app
 
 ENTRYPOINT ["./MTWireGuard"]
