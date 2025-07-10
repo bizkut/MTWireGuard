@@ -2,9 +2,9 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0-noble AS fina
 
 ENV TZ=Asia/Tehran
 
-# Install SQLite native library
+# Install SQLite native library and file utility
 USER root
-RUN apt-get update && apt-get install -y --no-install-recommends libsqlite3-0 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends libsqlite3-0 file && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 EXPOSE 8080
