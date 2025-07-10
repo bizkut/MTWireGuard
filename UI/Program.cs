@@ -12,7 +12,8 @@ internal class Program
 
     private static async Task Main(string[] args)
     {
-        SQLitePCL.Batteries.Init();
+        SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3());
+        SQLitePCL.raw.FreezeProvider(); // Make this choice permanent
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddControllersWithViews();
         builder.Services.AddExceptionHandler<ExceptionHandler>();
